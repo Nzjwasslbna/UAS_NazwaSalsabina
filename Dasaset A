@@ -1,0 +1,51 @@
+#include <iostream>
+#include <vector>
+
+int binarySearch(const std::vector<int>& arr, int target) {
+    int low = 0;
+    int high = arr.size() - 1;
+    
+   
+    while (low <= high) {
+        int mid = (low + high) / 2;
+
+        if (arr[mid] == target) {
+            return mid;
+        } else if (arr[mid] < target) {
+            low = mid + 1;
+        } else {
+            high = mid - 1;
+        }
+    }
+    return -1; 
+}
+
+int main() {
+    std::vector<int> datasetA;
+    datasetA.push_back(10);
+    datasetA.push_back(20);
+    datasetA.push_back(30);
+    datasetA.push_back(40);
+    datasetA.push_back(50);
+    datasetA.push_back(60);
+    datasetA.push_back(70);
+    datasetA.push_back(80);
+    datasetA.push_back(90);
+
+    int target;
+    
+    std::cout << "Nama 	: Nazwa Salsabina\n";
+    std::cout << "Nim	: 241011400841\n\n";
+    
+    std::cout << "Masukkan elemen yang dicari: ";
+    std::cin >> target;
+
+    int result = binarySearch(datasetA, target);
+    
+    if (result != -1)
+        std::cout << "Elemen " << target << " ditemukan di indeks: " << result << std::endl;
+    else
+        std::cout << "Elemen " << target << " tidak ditemukan." << std::endl;
+
+    return 0;
+}
