@@ -1,0 +1,85 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+struct Order {
+    int orderID;
+    std::string pickupLocation;
+    std::string destinationLocation;
+    std::string orderTime; 
+
+    Order(int id, const std::string& pickup, const std::string& destination, const std::string& time)
+        : orderID(id), pickupLocation(pickup), destinationLocation(destination), orderTime(time) {}
+};
+
+void merge(std::vector<Order>& orders, int left, int mid, int right) {
+    int n1 = mid - left + 1;
+    int n2 = right - mid;
+
+    std::vector<Order> L;
+    std::vector<Order> R;
+
+    for (int i = 0; i < n1; ++i)
+        L.push_back(orders[left + i]);
+    for (int j = 0; j < n2; ++j)
+        R.push_back(orders[mid + 1 + j]);
+
+    int i = 0, j = 0, k = left;
+
+    while (i < n1 && j < n2) {
+        if (L[i].orderTime <= R[j].orderTime) {
+            orders[k++] = L[i++];
+        } else {
+            orders[k++] = R[j++];
+        }
+    }
+
+    while (i < n1) {
+        orders[k++] = L[i++];
+    }
+
+    while (j < n2) {
+        orders[k++] = R[j++];
+    }
+}
+
+void mergeSort(std::vector<Order>& orders, int left, int right) {
+    if (left < right) {
+        int mid = left + (right - left) / 2;
+
+        mergeSort(orders, left, mid);
+        mergeSort(orders, mid + 1, right);
+        merge(orders, left, mid, right);
+    }
+}
+
+void displayOrders(const std::vector<Order>& orders) {
+    for (size_t i = 0; i < orders.size(); ++i) {
+        std::cout << "Order ID: " << orders[i].orderID 
+                  << ", Waktu Pemesanan: " << orders[i].orderTime 
+                  << ", Lokasi Pengambilan: " << orders[i].pickupLocation 
+                  << ", Lokasi Tujuan: " << orders[i].destinationLocation << '\n';
+    }
+}
+
+int main() {
+    std::vector<Order> orders;
+    
+    orders.push_back(Order(1, "Jakarta", "Bandung", "2025-01-05 10:00"));
+    orders.push_back(Order(2, "Surabaya", "Malang", "2025-01-05 09:30"));
+    orders.push_back(Order(3, "Bali", "Lombok", "2025-01-05 11:15"));
+    orders.push_back(Order(4, "Medan", "Pekanbaru", "2025-01-05 08:45"));
+    orders.push_back(Order(5, "Yogyakarta", "Solo", "2025-01-05 09:00"));
+    
+    std::cout << "Nama 	: Nazwa Salsabina\n";
+    std::cout << "Nim	: 241011400841\n\n";
+
+    std::cout << "Data pesanan sebelum diurutkan:\n";
+    displayOrders(orders);
+    mergeSort(orders, 0, orders.size() - 1);
+
+    std::cout << "\nData pesanan setelah diurutkan berdasarkan waktu pemesanan:\n";
+    displayOrders(orders);
+
+    return 0;
+}
